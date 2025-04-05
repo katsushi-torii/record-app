@@ -1,0 +1,14 @@
+# node_modules（フロントとバック両方）
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# 環境変数（使う場合）
+.env
+
+# macOSの不要ファイル
+.DS_Store
+
+# IDE関係（必要に応じて）
+.vscode/
+.idea/
