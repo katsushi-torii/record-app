@@ -5,7 +5,8 @@ const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '', // XAMPPでパスワードが設定されていなければ空
-  database: 'record_app'
+  database: 'record_app',
+  charset: 'utf8mb4' // ← 追加！
 });
 
 db.connect((err) => {

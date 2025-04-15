@@ -15,7 +15,6 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   const {
     title,
-    series_name,
     date_finished,
     rating,
     memo,
@@ -24,13 +23,53 @@ router.post('/', (req, res) => {
   } = req.body;
 
   db.query(
-    'INSERT INTO manga (title, series_name, date_finished, rating, memo, last_read_type, last_read_number) VALUES (?, ?, ?, ?, ?, ?, ?)',
-    [title, series_name, date_finished, rating, memo, last_read_type, last_read_number],
+    'INSERT INTO manga (title, date_finished, rating, memo, last_read_type, last_read_number) VALUES (?, ?, ?, ?, ?, ?)',
+    [title, date_finished, rating, memo, last_read_type, last_read_number],
     (err, result) => {
       if (err) return res.status(500).json({ error: err });
       res.json({ message: '追加成功', id: result.insertId });
     }
   );
 });
+
+// 追加：DELETE /api/manga/:id
+router.delete('/:id', (req, res) => {
+    const id = req.params.id;
+    db.query('DELETE FROM manga WHERE id = ?', [id], (err, result) => {
+    if (err) return res.status(500).json({ error: err });
+    res.json({ message: '削除成功' });
+    });
+});
+
+// PUT /api/manga/:id
+router.put('/:id', (req, res) => {
+    const id = req.params.id;
+    const {
+        title,
+        date_finished,
+        rating,
+        memo,
+        last_read_type,
+        last_read_number
+    } = req.body;
+
+    db.query(
+        `UPDATE manga SET 
+        title = ?, 
+        date_finished = ?, 
+        rating = ?, 
+        memo = ?, 
+        last_read_type = ?, 
+        last_read_number = ?
+        WHERE id = ?`,
+        [title, date_finished, rating, memo, last_read_type, last_read_number, id],
+        (err, result) => {
+        if (err) return res.status(500).json({ error: err });
+        res.json({ message: '更新成功' });
+        }
+    );
+});
+  
+  
 
 module.exports = router;
